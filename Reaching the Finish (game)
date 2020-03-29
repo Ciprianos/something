@@ -1,0 +1,458 @@
+#include <iostream>
+using namespace std;
+
+struct PlayerAndFinishCoords {
+	int x, y;
+} Player, Finish;
+bool doorAccess = false;
+
+char Level1[2][3] = {
+	{'P', '.', '.'},
+	{'.', '.', 'F'}
+};
+
+char Level2[4][4] = {
+	{'X', 'X', 'P', 'X'},
+	{'.', '.', '.', '.'},
+	{'X', '.', 'X', 'X'},
+	{'X', '.', '.', 'F'}
+};
+
+char Level3[5][6] = {
+	{'P', 'X', 'X', 'X', '.', 'K'},
+	{'.', 'X', 'X', 'X', '.', 'X'},
+	{'.', 'X', '.', '.', '.', 'X'},
+	{'.', '.', '.', 'X', 'X', 'X'},
+	{'X', 'X', '.', 'D', 'F', 'X'}
+};
+
+void Gameplay(char board[16][16], int n, int m) {
+
+}
+
+int main() {
+	cout << "\t\tWelcome to REACH THE FINISH\n\n";
+	cout << "Press 'P' and then hit enter to continue: ";
+	char P;
+	cin >> P;
+	while (P != 'P' && P != 'p') {
+		system("cls");
+		cout << "\t\tWelcome to REACH THE FINISH\n\n";
+		cout << "Invalid Command!\n";
+		cout << "Press 'P' and then hit enter to continue: ";
+		cin >> P;
+	}
+
+	system("cls");
+
+	///// LEVEL 1 /////
+	cout << "Level 1\n" << "You are P and you have to reach F\n" << "Write W A S or D and then hit enter in order to move\n\n";
+
+	//finding the coords
+	for (int i = 0; i < 2; ++i) {
+		for (int j = 0; j < 3; ++j) {
+			if (Level1[i][j] == 'P') {
+				Player.x = i;
+				Player.y = j;
+			}
+			if (Level1[i][j] == 'F') {
+				Finish.x = i;
+				Finish.y = j;
+			}
+			cout << Level1[i][j];
+		}
+		cout << '\n';
+	}
+
+	//Gameplay
+	while (Player.x != Finish.x || Player.y != Finish.y) {
+		char command;
+		cin >> command;
+		system("cls");
+		cout << "Level 1\n";
+		if (command == 'A' || command == 'a') { //LEFT
+			Player.y--; //moving left
+
+			//leaving the Level1
+			if (Player.y < 0) {
+				Player.y++;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level1[Player.x][Player.y] == 'X') {
+				Player.y++;
+				cout << "You've hit a wall!\n";
+			}
+
+			//hitting the door
+			if (Level1[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.y++;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'W' || command == 'w') { //UP
+			Player.x--; //moving up
+
+			//leaving the Level1
+			if (Player.x < 0) {
+				Player.x++;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level1[Player.x][Player.y] == 'X') {
+				Player.x++;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level1[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.x++;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'S' || command == 's') { //DOWN
+			Player.x++; //moving down
+
+			//leaving the Level1
+			if (Player.x > 1) {
+				Player.x--;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level1[Player.x][Player.y] == 'X') {
+				Player.x--;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level1[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.x--;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'D' || command == 'd') { //RIGHT
+			Player.y++; //moving right
+
+			//leaving the Level1
+			if (Player.y > 2) {
+				Player.y--;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level1[Player.x][Player.y] == 'X') {
+				Player.y--;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level1[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.y--;
+				cout << "The door is locked!\n";
+			}
+
+		} else {
+			cout << "Invalid command!\n";
+		}
+
+		//taking the key
+		if (Level1[Player.x][Player.y] == 'K')
+			doorAccess = true;
+
+		//analysing the Level1 in order to move the player
+		for (int i = 0; i < 2; ++i)
+			for (int j = 0; j < 3; ++j) {
+				if (Level1[i][j] == 'P')
+					Level1[i][j] = '.';
+				if (i == Player.x && j == Player.y)
+					Level1[i][j] = 'P';
+			}
+
+		//displaying the Level1
+		for (int i = 0; i < 2; ++i) {
+			for (int j = 0; j < 3; ++j)
+				cout << Level1[i][j];
+			cout << '\n';
+		}
+		cout << '\n';
+	}
+
+	system("cls");
+
+	///// LEVEL 2 /////
+	cout << "Level 2\n" << "X represents the walls\n\n";
+
+	//finding the coords
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) {
+			if (Level2[i][j] == 'P') {
+				Player.x = i;
+				Player.y = j;
+			}
+			if (Level2[i][j] == 'F') {
+				Finish.x = i;
+				Finish.y = j;
+			}
+			cout << Level2[i][j];
+		}
+		cout << '\n';
+	}
+
+	//Gameplay
+	while (Player.x != Finish.x || Player.y != Finish.y) {
+		char command;
+		cin >> command;
+		system("cls");
+		cout << "Level 2\n";
+		if (command == 'A' || command == 'a') { //LEFT
+			Player.y--; //moving left
+
+			//leaving the Level
+			if (Player.y < 0) {
+				Player.y++;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level2[Player.x][Player.y] == 'X') {
+				Player.y++;
+				cout << "You've hit a wall!\n";
+			}
+
+			//hitting the door
+			if (Level2[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.y++;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'W' || command == 'w') { //UP
+			Player.x--; //moving up
+
+			//leaving the Level
+			if (Player.x < 0) {
+				Player.x++;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level2[Player.x][Player.y] == 'X') {
+				Player.x++;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level2[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.x++;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'S' || command == 's') { //DOWN
+			Player.x++; //moving down
+
+			//leaving the Level
+			if (Player.x > 3) {
+				Player.x--;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level2[Player.x][Player.y] == 'X') {
+				Player.x--;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level2[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.x--;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'D' || command == 'd') { //RIGHT
+			Player.y++; //moving right
+
+			//leaving the Level
+			if (Player.y > 3) {
+				Player.y--;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level2[Player.x][Player.y] == 'X') {
+				Player.y--;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level2[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.y--;
+				cout << "The door is locked!\n";
+			}
+
+		} else {
+			cout << "Invalid command!\n";
+		}
+
+		//taking the key
+		if (Level2[Player.x][Player.y] == 'K')
+			doorAccess = true;
+
+		//analysing the Level2 in order to move the player
+		for (int i = 0; i < 4; ++i)
+			for (int j = 0; j < 4; ++j) {
+				if (Level2[i][j] == 'P')
+					Level2[i][j] = '.';
+				if (i == Player.x && j == Player.y)
+					Level2[i][j] = 'P';
+			}
+
+		//displaying the Level2
+		for (int i = 0; i < 4; ++i) {
+			for (int j = 0; j < 4; ++j)
+				cout << Level2[i][j];
+			cout << '\n';
+		}
+		cout << '\n';
+	}
+
+	system("cls");
+
+	///// LEVEL 3 /////
+	cout << "Level 3\n" << "D is the door and K is the key which you have to pick up in order to open the door\n\n";
+
+	//finding the coords
+	for (int i = 0; i < 5; ++i) {
+		for (int j = 0; j < 6; ++j) {
+			if (Level3[i][j] == 'P') {
+				Player.x = i;
+				Player.y = j;
+			}
+			if (Level3[i][j] == 'F') {
+				Finish.x = i;
+				Finish.y = j;
+			}
+			cout << Level3[i][j];
+		}
+		cout << '\n';
+	}
+
+	//Gameplay
+	while (Player.x != Finish.x || Player.y != Finish.y) {
+		char command;
+		cin >> command;
+		system("cls");
+		cout << "Level 3\n";
+		if (command == 'A' || command == 'a') { //LEFT
+			Player.y--; //moving left
+
+			//leaving the Level3
+			if (Player.y < 0) {
+				Player.y++;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level3[Player.x][Player.y] == 'X') {
+				Player.y++;
+				cout << "You've hit a wall!\n";
+			}
+
+			//hitting the door
+			if (Level3[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.y++;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'W' || command == 'w') { //UP
+			Player.x--; //moving up
+
+			//leaving the Level3
+			if (Player.x < 0) {
+				Player.x++;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level3[Player.x][Player.y] == 'X') {
+				Player.x++;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level3[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.x++;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'S' || command == 's') { //DOWN
+			Player.x++; //moving down
+
+			//leaving the Level3
+			if (Player.x > 4) {
+				Player.x--;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level3[Player.x][Player.y] == 'X') {
+				Player.x--;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level3[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.x--;
+				cout << "The door is locked!\n";
+			}
+
+		} else if (command == 'D' || command == 'd') { //RIGHT
+			Player.y++; //moving right
+
+			//leaving the Level3
+			if (Player.y > 5) {
+				Player.y--;
+				cout << "Out of bounds!\n";
+			}
+
+			//hitting a wall
+			if (Level3[Player.x][Player.y] == 'X') {
+				Player.y--;
+				cout << "You've hit a wall\n";
+			}
+
+			//hitting the door
+			if (Level3[Player.x][Player.y] == 'D' && doorAccess == false) {
+				Player.y--;
+				cout << "The door is locked!\n";
+			}
+
+		} else {
+			cout << "Invalid command!\n";
+		}
+
+		//taking the key
+		if (Level3[Player.x][Player.y] == 'K')
+			doorAccess = true;
+
+		//analysing the Level3 in order to move the player
+		for (int i = 0; i < 5; ++i)
+			for (int j = 0; j < 6; ++j) {
+				if (Level3[i][j] == 'P')
+					Level3[i][j] = '.';
+				if (i == Player.x && j == Player.y)
+					Level3[i][j] = 'P';
+			}
+
+		//displaying the Level3
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < 6; ++j)
+				cout << Level3[i][j];
+			cout << '\n';
+		}
+		cout << '\n';
+	}
+	cout << "CONGRATULATIONS, YOU'VE WON!!!\n";
+	return 0;
+}
